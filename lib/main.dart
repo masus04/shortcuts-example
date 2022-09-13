@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(
+        title: 'Flutter Demo Home Page',
+      ),
     );
   }
 }
@@ -67,17 +69,40 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'You have pushed the button this many times:',
+                  style: Theme.of(context).textTheme.headline5!,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Text.rich(
+                    TextSpan(
+                      style: Theme.of(context).textTheme.headline5!.copyWith(textBaseline: TextBaseline.ideographic),
+                      children: const [
+                        TextSpan(text: "Press "),
+                        WidgetSpan(child: KeyIcon(iconData: Icons.arrow_upward)),
+                        TextSpan(text: " to increment counter, press "),
+                        WidgetSpan(child: KeyIcon(iconData: Icons.arrow_downward)),
+                        TextSpan(text: " to decrease counter."),
+                      ],
+                    ),
+                  ),
                 ),
                 Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headline4,
+                  "Notice that keyboard shortcuts only work when the TextField below is focused",
+                  style: Theme.of(context).textTheme.headline5!.copyWith(color: Colors.red),
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  padding: EdgeInsets.all(16),
                   child: TextField(
-                    autofocus: true,
+                    decoration: InputDecoration(labelText: "Click here for shortcuts to work"),
                   ),
                 ),
               ],
@@ -90,6 +115,26 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class KeyIcon extends StatelessWidget {
+  final IconData iconData;
+
+  const KeyIcon({Key? key, required this.iconData}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        border: Border.all(),
+      ),
+      child: Icon(
+        iconData,
+        size: 20,
+      ),
     );
   }
 }
@@ -109,7 +154,7 @@ class SetCounterAction extends Action {
 
   @override
   Object? invoke(Intent intent) {
-    debugPrint("Increment counter");
+    debugPrint("Updated counter");
     return perform();
   }
 }
